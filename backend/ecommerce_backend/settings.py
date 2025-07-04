@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from loguru import logger
+import sys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -28,7 +30,21 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+LOGGING_CONFIG = None
 
+# Setup Loguru
+
+logger.remove()  # Remove default
+common_format = (
+    "{time:YYYY-MM-DD HH:mm:ss.SSS} | "
+    "{level:^7} | "
+    "{name}:{function}:{line} | "
+    "{message} | "
+    "request_id={extra[request_id]} user_id={extra[user_id]}"
+)
+logger.add(sys.stdout, level="DEBUG", format=common_format, enqueue=True)
+logger.add("logs/debug.log", rotation="1 week", level="DEBUG", format=common_format)
+logger.add("logs/error.json", rotation="1 week", level="ERROR", serialize=True)
 
 # Application definition
 
@@ -51,12 +67,13 @@ AUTH_USER_MODEL = 'users.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django_clerk.middleware.ClerkMiddleware',              # ← move up here
+    'django_clerk.middleware.ClerkMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',  # ← now runs after Clerk
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ecommerce_backend.middleware.log_middleware.LogContextMiddleware',
 ]
 
 

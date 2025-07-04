@@ -1,9 +1,11 @@
 # users/auth.py
 from rest_framework import authentication, exceptions
 from clerk import Clerk  # from clerk-sdk
+from loguru import logger
 
 class ClerkAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
+        logger.info("This is an INFO message from authenticate")
         auth = request.headers.get('Authorization', '')
         if not auth.startswith('Bearer '):
             return None
