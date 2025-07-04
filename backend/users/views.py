@@ -1,12 +1,14 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .auth import ClerkAuthentication
 
-@require_GET
+@api_view(['GET'])
+@authentication_classes([ClerkAuthentication])
+@permission_classes([IsAuthenticated])
 def who_am_i(request):
-    # ClerkMiddleware has already set request.user
     user = request.user
-    return JsonResponse({
+    return Response({
         'id': user.clerk_id,
         'email': user.email,
     })

@@ -41,18 +41,24 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'django_clerk',
+    'rest_framework',
+     'products',
+    'orders',
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_clerk.middleware.ClerkMiddleware',              # ← move up here
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # ← now runs after Clerk
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_clerk.middleware.ClerkMiddleware',
 ]
+
 
 ROOT_URLCONF = 'ecommerce_backend.urls'
 
@@ -63,7 +69,7 @@ CLERK_JWT_PEM_PUBLIC_KEY = os.getenv('CLERK_JWT_PEM_PUBLIC_KEY')
 CLERK_API_SECRET_KEY = os.getenv('CLERK_API_SECRET_KEY')
 
 AUTHENTICATION_BACKENDS = [
-    'django_clerk.backends.ClerkBackend',    # validates incoming JWTs
+    # 'django_clerk.backends.ClerkBackend',    # validates incoming JWTs
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -140,3 +146,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Use JSON only (no HTML browsable API)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'users.auth.ClerkAuthentication',        
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+}
