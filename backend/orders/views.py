@@ -34,3 +34,14 @@ def all_orders(request):
         'orders': Order.objects.all()
     }
     return HttpResponse(template.render(context, request))
+
+def order_details(request, orderid):
+    template = loader.get_template('order_detail.html')
+    context = {
+        'order': Order.objects.get(pk=orderid)
+    }
+    return HttpResponse(template.render(context, request))
+
+def main(request):
+    template = loader.get_template('main.html')
+    return HttpResponse(template.render({}, request))
