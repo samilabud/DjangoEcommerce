@@ -2,6 +2,9 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .models import Order
 from .serializer import OrderSerializer
+from django.template import loader
+from django.http import HttpResponse
+
 
 class IsOwnerOrAdmin(IsAuthenticated):
     """
@@ -24,3 +27,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # set user to request.user
         serializer.save(user=self.request.user)
+
+def all_orders(request):
+    template = loader.get_template('all_orders.html')
+    context = {
+        'orders': Order.objects.all()
+    }
+    return HttpResponse(template.render(context, request))

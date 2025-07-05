@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h1>Orders</h1>
+
+    {% for order in orders %}
+    <p><a href="{% url 'order-detail' order.id %}">Order #{{ order.id }}</a></p>
+    {% endfor %}
+</body>
+
+</html>
