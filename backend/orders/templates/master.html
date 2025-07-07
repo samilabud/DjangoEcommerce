@@ -1,8 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'global.css' %}">
+    <link rel="stylesheet" href="{% static 'order.css' %}">
 </head>
 
 <body>

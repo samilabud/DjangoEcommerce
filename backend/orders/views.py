@@ -31,7 +31,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 def all_orders(request):
     template = loader.get_template('all_orders.html')
     context = {
-        'orders': Order.objects.all()
+        'orders':  Order.objects.all()
     }
     return HttpResponse(template.render(context, request))
 

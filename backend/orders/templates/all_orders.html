@@ -1,9 +1,14 @@
 {% extends 'master.html' %} 
 {% block title %} Orders List {% endblock %} 
 {% block content %}
-<h1>Orders</h1>
-
-    {% for order in orders %}
+<div class="mycard">
+    <h1>Orders</h1>
+    <p><a href="{% url 'main' %}">Orders Home</a></p>
+    {% for order in orders reversed%}
         <p><a href="{% url 'order-detail' order.id %}">Order #{{ order.id }}</a></p>
+        {% empty %} <p>No orders yet.</p> 
     {% endfor %} 
+</div>
+    {% comment %} this is a test to include footer {% endcomment %}
+{% include 'footer.html' with username="samilabud" %}
 {% endblock %}
