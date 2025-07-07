@@ -1,0 +1,10 @@
+{% extends 'master.html' %}
+
+{% block title %}Product detail - {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="mycard">
+    <h1>{{ product.name }} - {{ product.price }}</h1>
+    <p>{{ product.description }}</p>
+</div>
+{% endblock %}

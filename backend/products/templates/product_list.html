@@ -1,0 +1,16 @@
+{% extends 'master.html' %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+<div class="mycard">
+    <h1>Product List</h1>
+    {% for p in products %}
+        <p>
+            <a href="{% url 'product_detail' p.slug %}">
+                {{ p.name }} - {{ p.price }}
+            </a>
+        </p>
+    {% endfor %}
+</div>
+{% endblock %}
