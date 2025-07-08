@@ -6,5 +6,9 @@
 <div class="mycard">
     <h1>{{ product.name }} - {{ product.price }}</h1>
     <p>{{ product.description }}</p>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 300px;">
+    {% endif %}
+    
 </div>
 {% endblock %}
