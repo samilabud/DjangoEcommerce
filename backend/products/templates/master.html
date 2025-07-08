@@ -21,9 +21,9 @@
         </li>
     </ul>
 
-    {% if request.resolver_match.url_name != 'products' %}
+    {% comment %} {% if request.resolver_match.url_name != 'products' %}
         <a href="{% url 'products' %}">Product List</a>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     {% block content %}
     {% endblock %}
