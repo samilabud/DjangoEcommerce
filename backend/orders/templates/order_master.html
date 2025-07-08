@@ -4,14 +4,16 @@
 
 <head>
     <title>{% block title %}{% endblock %}</title>
+    {% comment %} <link rel="stylesheet" href="{% static 'global.css' %}"> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static 'order.css' %}"> {% endcomment %}
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 </head>
 
 <body>
-    <div class="container">
-        <h1>Products</h1>
+<div class="container">
+    <h1>Orders</h1>
     <ul class="nav bg-info">
         <li class="nav-item">
             <a class="nav-link link-light" href="{% url 'products' %}">Products Home</a>
@@ -20,14 +22,12 @@
             <a class="nav-link link-light" href="{% url 'main' %}">Orders Home</a>
         </li>
     </ul>
-
-    {% if request.resolver_match.url_name != 'products' %}
-        <a href="{% url 'products' %}">Product List</a>
-    {% endif %}
-
     {% block content %}
     {% endblock %}
-    </div>
+</div>
+
+    {% comment %} this is a test to include footer {% endcomment %}
+{% include 'order_footer.html' with username="samilabud" %}
 </body>
 
 </html>

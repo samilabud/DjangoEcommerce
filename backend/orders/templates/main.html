@@ -1,8 +1,8 @@
-{% extends 'master.html' %}
+{% extends 'order_master.html' %}
 {% block title %} Orders Module {% endblock %}
 {% block content %}
-<div class="main">
-    <h1>Orders Module</h1>
-    <a href="{% url 'all_orders' %}">All Orders</a>
-</div>
+    <div class="main">
+        <h1>Orders Module</h1>
+        <a href="{% url 'all_orders' %}">All Orders</a>
+    </div>
 {% endblock %}
