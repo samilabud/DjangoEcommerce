@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from loguru import logger
+from corsheaders.defaults import default_headers
 import sys
 from dotenv import load_dotenv
 load_dotenv()
@@ -62,19 +63,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'django_clerk',
     'rest_framework',
-     'products',
+    'products',
     'orders',
     'bootstrap5',
+    'corsheaders',
 ]
 
 AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django_clerk.middleware.ClerkMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -84,17 +85,33 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    # en prod pon aquí tu dominio: e.g. "https://mi-front.com"
+]
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'Authorization',
+]
+
 
 ROOT_URLCONF = 'ecommerce_backend.urls'
 
-CLERK_JWT_PEM_PUBLIC_KEY = os.getenv('CLERK_JWT_PEM_PUBLIC_KEY')
+
 # (Obtain this from your Clerk Dashboard → API Keys)
 
 # Use Clerk’s backend API if you need to fetch user metadata
-CLERK_API_SECRET_KEY = os.getenv('CLERK_API_SECRET_KEY')
+# CLERK_API_SECRET_KEY = os.getenv('CLERK_API_SECRET_KEY')
+CLERK_PUBLISHABLE_KEY = os.getenv('CLERK_PUBLISHABLE_KEY')
+CLERK_SECRET_KEY = os.getenv('CLERK_SECRET_KEY')
+CLERK_AUTHORIZED_PARTIES = [
+    "http://localhost:5173",      # Vite dev server
+    # "https://your-production-url.com",
+]
 
 AUTHENTICATION_BACKENDS = [
-    # 'django_clerk.backends.ClerkBackend',    # validates incoming JWTs
     'django.contrib.auth.backends.ModelBackend',
 ]
 
